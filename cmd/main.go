@@ -24,7 +24,7 @@ func main() {
 	})
 
 	server.POST("/add", func(ctx *gin.Context) {
-
+		
 	})
 
 	server.DELETE("/:id", func(ctx *gin.Context) {
