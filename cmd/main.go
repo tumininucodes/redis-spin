@@ -1,17 +1,16 @@
 package main
 
 import (
-	"context"
 	"fmt"
 
+	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 )
 
 
-var ctx = context.Background()
-
 func main() {
 
+	server := gin.Default()
 
 	client := redis.NewClient(&redis.Options{
 		Addr: "localhost:6379",
@@ -19,12 +18,26 @@ func main() {
 		DB: 0,
 	})
 
-	ping, err := client.Ping(ctx).Result()
+	ping, err := client.Ping(&gin.Context{}).Result()
 	if err != nil {
 		panic(err.Error())
 	}
 
-	
+	fmt.Println("redis client >> ", ping)
 
-	fmt.Println(ping)
+
+	server.GET("/:id", func(ctx *gin.Context) {
+
+	})
+
+	server.POST("/add", func(ctx *gin.Context) {
+
+	})
+
+	server.DELETE("/:id", func(ctx *gin.Context) {
+
+	})
+
+
+	server.Run(":8080")
 }
