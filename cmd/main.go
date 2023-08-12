@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"redis-spin/internal"
 
 	"github.com/gin-gonic/gin"
-	"github.com/redis/go-redis/v9"
 )
 
 
@@ -12,22 +11,16 @@ func main() {
 
 	server := gin.Default()
 
-	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
-		Password: "",
-		DB: 0,
-	})
-
-	ping, err := client.Ping(&gin.Context{}).Result()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	fmt.Println("redis client >> ", ping)
-
+	rdb := internal.OpenDB()
 
 	server.GET("/:id", func(ctx *gin.Context) {
-
+		id := ctx.Param("id")
+		result, err := rdb.Get(id).Result()
+		if err != nil {
+			ctx.JSON(400, gin.H {"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, result)
 	})
 
 	server.POST("/add", func(ctx *gin.Context) {
@@ -40,4 +33,6 @@ func main() {
 
 
 	server.Run(":8080")
+
+
 }
