@@ -8,9 +8,9 @@ import (
 func OpenDB() *redis.Client {
 
 	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
+		Addr:     "localhost:6379",
 		Password: "",
-		DB: 0,
+		DB:       0,
 	})
 
 	ping, err := client.Ping().Result()
@@ -21,6 +21,18 @@ func OpenDB() *redis.Client {
 	fmt.Println("redis client >> ", ping)
 
 	return client
+}
+
+
+func GetEntry(id string, client *redis.Client) (*Reminder, error) {
+	var reminder Reminder
+	result, err := client.Get(id).Result()
+	if err != nil {
+		return nil, err
+	}
+	reminder.ID = id
+	reminder.Value = result
+	return &reminder, nil
 }
 
 
