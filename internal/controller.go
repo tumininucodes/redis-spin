@@ -24,7 +24,12 @@ func OpenDB() *redis.Client {
 }
 
 
-func AddToDB(client *redis.Client, reminder *Reminder) {
+func AddToDB(client *redis.Client, reminder *Reminder) (*Reminder, *error) {
 
-	client.Set(reminder.ID, reminder.Value)
+	err := client.Set(reminder.ID, reminder.Value, 0).Err()
+	if err != nil {
+		return nil, &err
+	}
+	return reminder, nil
+
 }
