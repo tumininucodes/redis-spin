@@ -23,3 +23,8 @@ func OpenDB() *redis.Client {
 	return client
 }
 
+
+func AddToDB(client *redis.Client, reminder *Reminder) {
+
+	client.Set(reminder.ID, reminder.Value)
+}

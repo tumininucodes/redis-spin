@@ -2,7 +2,6 @@ package main
 
 import (
 	"redis-spin/internal"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,6 +23,8 @@ func main() {
 	})
 
 	server.POST("/add", func(ctx *gin.Context) {
+		var reminder internal.Reminder
+		ctx.ShouldBindJSON(reminder)
 		
 	})
 
